@@ -1,5 +1,5 @@
 /app/*.js
 /app/*.js.map
 
-
+/img/
 /node_modules
