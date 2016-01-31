@@ -1,16 +1,36 @@
 import {Component, OnInit} from 'angular2/core';
-import {Config} from './config';
-import {CONFIG} from './mock-config';
+import {Router} from 'angular2/router';
+
 @Component({
   selector: 'game-title',
   template: `
-      <h2>{{conf.title}}</h2>
-  `
+    <div class="title-page" (click)="onClick()">
+      <h2>{{ title }}</h2>
+    </div>
+  `,
+  styles: [`
+    h2 {
+      text-align: center;
+    }
+    .title-page {
+      width: 100%;
+      height: 100%;
+    }
+  `]
 })
+
 export class GameTitleComponent implements OnInit {
-  public conf: Config;
+  public title: string = 'title';
+
+  constructor(private _router: Router) {
+  }
 
   ngOnInit() {
-    this.conf = CONFIG;
+    this.title = 'yokuwakaran';
   }
+
+  onClick() {
+    this._router.navigate(['GameMain']);
+  }
+
 };

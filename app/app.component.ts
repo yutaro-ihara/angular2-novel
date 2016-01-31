@@ -1,53 +1,48 @@
 import {Component, OnInit} from 'angular2/core';
-import {Hero} from './hero';
-import {HeroDetailComponent} from './hero-detail.component';
-import {HeroService} from './hero.service';
-import {Config} from './config';
-import {ConfigService} from './config.service';
+import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
+import {ScenarioService} from './scenario.service';
+import {GameMainComponent} from './game-main.component';
 import {GameTitleComponent} from './game-title.component';
 
+
 @Component({
-  selector: 'my-app',
+  selector: 'novel-app',
   template:`
     <h1>{{title}}</h1>
-    <game-title></game-title>
-    <button (click)="onClickStart()" >Start</button>
+    <div class="main-view">
+      <router-outlet></router-outlet>
+    </div>
   `,
-  directives: [
-    HeroDetailComponent,
-    GameTitleComponent
-  ],
-  providers: [
-    HeroService,
-    ConfigService
-  ]
+  styles: [`
+    .main-view {
+      background-color: black;
+      width: 800px;
+      height: 700px;
+    }
+    .main-view > * {
+      width: 100%;
+    }
+    .main-view:after {
+      display: block;
+      clear: both;
+      content: "";
+    }
+  `],
+  providers: [ScenarioService],
+  directives: [ROUTER_DIRECTIVES]
 })
+@RouteConfig([
+  {path: '/', name: 'GameTitle', component: GameTitleComponent, useAsDefault: true},
+  {path:'/main', name: 'GameMain', component: GameMainComponent},
+])
 export class AppComponent implements OnInit {
-  public title = 'Tour of Heroes';
-  public heroes: Hero[];
-  public selectedHero: Hero;
-  public config: Config;
+  public title = 'Test Novel';
 
   constructor(
-    private _heroService: HeroService,
-    private _configService: ConfigService
+    private _scenarioService: ScenarioService
   ) { }
 
-  getHeroes() {
-    this._heroService.getHeroes().then(heroes => this.heroes = heroes);
-  }
-
-  getConfig() {
-    this._configService.getConfig().then(config => this.config = config);
-  }
-
   ngOnInit() {
-    this.getHeroes();
-    this.getConfig();
-  }
-  onSelect(hero: Hero) { this.selectedHero = hero; }
 
-  onClickStart() {
-    alert('click');
   }
 }
